@@ -1,7 +1,12 @@
+using AngularProject.Context;
+using AngularProject.Models;
+using AngularProject.Tools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,16 +15,24 @@ namespace AngularProject
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup()
+        {
+            Configuration = AppVariableConfiguration.ConfigurationRoot(); ;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var cs = Configuration.GetConnectionString("SQL");
+            services.AddDbContext<AngularProjectContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("SQL")));
+            services.AddIdentity<User, IdentityRole<int>>().AddEntityFrameworkStores<AngularProjectContext>();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -44,18 +57,24 @@ namespace AngularProject
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.SeedAdminUser();
+
+            
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
 
+            app.UseAuthentication();
             app.UseRouting();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
