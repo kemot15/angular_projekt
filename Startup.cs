@@ -1,5 +1,7 @@
 using AngularProject.Context;
 using AngularProject.Models;
+using AngularProject.Services;
+using AngularProject.Services.Interfaces;
 using AngularProject.Tools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +34,8 @@ namespace AngularProject
             {
                 options.User.RequireUniqueEmail = true;
             });
+
+            services.AddScoped<IPostService, PostService>();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
