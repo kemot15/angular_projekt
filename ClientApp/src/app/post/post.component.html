@@ -1,0 +1,35 @@
+<!-- <p-table [value]="posts">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Id</th>
+            <th>Tytuł</th>
+            <th>Tekst</th>
+        </tr>
+    </ng-template>
+    <ng-templateq pTemplate="body" let-post>
+        <tr>
+            <td>post.id</td>
+            <td>post.title</td>
+            <td>post.text</td>
+        </tr>
+    </ng-templateq>
+</p-table> -->
+
+
+<table>
+    <header>
+        <tr>
+            <th>Id</th>
+            <th>Tytul</th>
+            <th>Tekst</th>
+        </tr>
+    </header>
+    <body *ngFor="let post of posts">
+        <tr>
+            <td>{{post.id}}</td>
+            <td>{{ post.title }}</td>
+            <td>{{ post.text }}</td>
+        </tr>
+        
+    </body>
+</table>
