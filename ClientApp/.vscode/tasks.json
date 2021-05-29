@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "mock",
+			"problemMatcher": [],
+			"label": "npm: mock",
+			"detail": "ng serve --configuration=mock",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
