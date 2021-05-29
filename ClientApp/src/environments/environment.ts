@@ -2,8 +2,22 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { Inject, Injectable } from "@angular/core";
+
+class urlserwis {
+  public static baseUrl: string;
+
+  constructor(@Inject('BASE_URL') public baseUrl: string) {
+    this.baseUrl = baseUrl;    
+  }
+}
+
 export const environment = {
-  production: false
+  // Inject('BASE_URL') private baseUrl: string
+  production: false,
+  api: {
+    path: 'api' //@Inject('BASE_URL') private baseUrl: string
+  }  
 };
 
 /*
